@@ -26,6 +26,21 @@
 			document.getObjectById("content").src = url;
 		}
 	</script>
+	<style>
+		body {
+			display: flex;
+		}
 
+		#sidebar {
+			flex-grow: 1;
+			min-width: 100px;
+			max-width: 200px;
+		}
+
+		#content {
+			flex-grow: 5;
+			border: none;
+		}
+	</style>
 </body>
 </html>
