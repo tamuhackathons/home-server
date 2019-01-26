@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
+from plugins.plugin_parser import create_dictionary
 import configparser
 
 config = configparser.ConfigParser()
@@ -12,7 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html', port = PORT)
+    return render_template('index.html', port = PORT, apps = jsonify(create_dictionary()))
 
 @app.route('/home')
 def home():
