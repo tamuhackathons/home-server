@@ -25,5 +25,10 @@ def plugins(plugin):
     main_page = config[plugin]
     return 
 
+@app.route('/addplugin', methods=['POST'])
+def add_app():
+    
+    return 
+
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)
