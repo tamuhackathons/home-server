@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<link rel="stylesheet" href="/static/material/material.min.css">
+
+<head>
+    <title>Home Server</title>
+</head>
+<body>
+		<div id="sidebar">
+			<h1>
+				Home <br>
+				Server
+			</h1>
+			<hr>
+			<button id="add-app" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add App</button>
+			<ul>
+    		{% for item in apps %}
+				<li onclick="onAppClick('{{item.url}}')" class="mdl-list__item">{{ item.name }}</li>
+    		{% endfor %}
+			</ul>
+		</div>
+		<iframe id="content" src="http://localhost:{{port}}/home"></iframe>
+		<script> 
+			function onAppClick(url){
+				document.getObjectById("content").src = url;
+			}
+		</script>
+</body>
+</html>
