@@ -16,7 +16,7 @@
 		<button id="add-app" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add App</button>
 		<ul>
 		{% for item in apps %}
-			<li onclick="onAppClick('{{item.url}}')" class="mdl-list__item">{{ item.name }}</li>
+			<li onclick="onAppClick('{{ apps[item].url }}')" class="mdl-list__item">{{ apps[item].name }}</li>
 		{% endfor %}
 		</ul>
 	</div>
