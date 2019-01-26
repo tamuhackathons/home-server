@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html', port = PORT, apps = jsonify(create_dictionary()))
+    return render_template('index.html', port = PORT, apps = create_dictionary())
 
 @app.route('/home')
 def home():
