@@ -22,7 +22,7 @@ def home():
 
 @app.route('/<plugin>/')
 def plugins(plugin):
-    main_page = confing[plugin]
+    main_page = config[plugin]
     return 
 
 if __name__ == '__main__':
