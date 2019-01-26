@@ -14,6 +14,9 @@ def get_free_tcp_port():
 def current_running_containers():
     return client.containers.list(filters={'status': 'running'})
 
+def current_stopped_containers():
+    return client.containers.list(filers={'status': 'exited'})
+
 def create_new_plugin(docker_url, name):
     try:
         bind_port = get_free_tcp_port
@@ -22,6 +25,17 @@ def create_new_plugin(docker_url, name):
         return 200
     except:
         return 400
+    
+def stop_container(name):
+    for container in current_running_containers():
+        if container.name == name:
+            container.stop()
+            break
+        
+def start_container(name):
+    for container in current_stopped_containers():
+        if container.name == name:
+            container.start()
     
 
 if __name__ == '__main__':
