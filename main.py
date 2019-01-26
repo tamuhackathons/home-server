@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify
 from plugins.plugin_parser import create_dictionary
-from docker.docker_helper import current_running_containers
+from containers.docker_helper import current_running_containers
 import configparser
 
 config = configparser.ConfigParser()

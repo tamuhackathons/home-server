@@ -21,7 +21,7 @@ def add_plugin(plugin_name, name, url):
         config.write(config_file)
         
 def remove_plugin(plugin_name):
-    
+    pass
 
 if __name__ == '__main__':
     print(create_dictionary())
