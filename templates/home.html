@@ -24,11 +24,43 @@
                 <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['Name'] }}</td>
                 <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['Id'] }}</td>
                 <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['State']['Status'] }}</td>
+                <td><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="startContainer('{{ item.attrs['Name'] }}')">Start</button></td>
+                <td><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="stopContainer('{{ item.attrs['Name'] }}')">Stop</button></td>
             </tr>
 
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        function stopContainer(name) {
+            fetch('http://localhost:{{port}}/stop/'+name, {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                // mode: "cors", // no-cors, cors, *same-origin
+                // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                // credentials: "same-origin", // include, *same-origin, omit
+                redirect: "follow", // manual, *follow, error
+                referrer: "no-referrer", // no-referrer, *client
+            })
+            .then(response => response.json()).then(json => {
+                console.log('Received')
+            }) // parses response to JSON)
+        }
+
+        function startContainer(name) {
+            fetch('http://localhost:{{port}}/start/'+name, {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                // mode: "cors", // no-cors, cors, *same-origin
+                // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                // credentials: "same-origin", // include, *same-origin, omit
+                redirect: "follow", // manual, *follow, error
+                referrer: "no-referrer", // no-referrer, *client
+            })
+            .then(response => response.json()).then(json => {
+                console.log('Received')
+            }) // parses response to JSON)
+        }
+    </script>
 
     <style>
         body {
