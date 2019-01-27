@@ -1,6 +1,6 @@
 import docker, configparser, socket, sys
 sys.path.append('.')
-from plugins.plugin_parser import add_plugin, remove_plugin
+from plugins.plugin_parser import add_plugin, remove_plugin, edit_plugin
 
 client = docker.from_env()
 
@@ -70,6 +70,9 @@ def rename_container(old_name, new_name):
     container = get_container_by_name(old_name)
     stop_container(container)
     container.rename(new_name)
+    container.start()
+    edit_plugin(old_name, new_name)
+
     
 if __name__ == '__main__':
     print(current_running_containers())
