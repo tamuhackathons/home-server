@@ -58,10 +58,13 @@ def edit_apps_get():
 def edit_apps_post():
     print('Editing', request.form.get('url'))
     try:
-        if(request.form.get('url').startswith('http')):
-            edit_plugin(request.form.get('name'), request.form.get('new_name'))
-        else:
+        try:
             rename_container(request.form.get('name'), request.form.get('new_name'))
+        except docker.errors.APIError as e:
+            return jsonify({'status': 'FAILED'})
+        else:
+            edit_plugin(request.form.get('name'), request.form.get('new_name'))
+            
         return jsonify({ 'status': 'SUCCESS'})
     except:
         return jsonify({ 'status': 'FAILED' })
@@ -69,10 +72,12 @@ def edit_apps_post():
 @app.route('/deleteapp', methods=['DELETE'])
 def delete_app():
     try:
-        if(request.form.get('url').startswith('http')):
-            remove_plugin(request.form.get('name'))
-        else:
+        try:
             delete_container(request.form.get('name'))
+        except docker.errors.APIError as e:
+            return jsonify({ 'status': 'FAILED' })
+        else:
+            remove_plugin(request.form.get('name'))
         return jsonify({ 'status': 'SUCCESS'})
     except:
         return jsonify({ 'status': 'FAILED' })

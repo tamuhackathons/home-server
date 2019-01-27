@@ -9,6 +9,7 @@
 </head>
 <body>
     <a id='home' href="http://localhost:{{port}}/"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Home</button></a>
+    <p>Updating Docker containers might take some time. Be patient</p>
 	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
         <thead>
             <tr>
@@ -54,6 +55,8 @@
         function saveChange(name, n_name) {
             let new_name = document.getElementById(name+'-input').value
             let url = document.getElementById(name+'-url').innerHTML
+            
+            snackbar(name, 'Saving...')
 
             let formData = new FormData()
             formData.append('name', name)
@@ -81,11 +84,13 @@
                     } else {
                         changeToEdit(name, n_name)
                     }
+                } else {
+                    console.log(json)
                 }
 
             }) // parses response to JSON)
 
-            changeToEdit(name, new_name)
+            //changeToEdit(name, new_name)
         }
 
         function showEdit(name, n_name) {
@@ -101,6 +106,8 @@
 
         function deleteApp(name, n_name) {
             let url = document.getElementById(name+'-url').innerHTML
+            
+            snackbar(n_name, 'Trying to delete...')
 
             let formData = new FormData()
             formData.append('name', n_name)

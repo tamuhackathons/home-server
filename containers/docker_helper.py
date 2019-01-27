@@ -17,6 +17,11 @@ def get_container_by_name(name):
     for container in get_all_containers():
         if container.name == name:
             return container
+        
+def get_container_image(name):
+    for container in get_all_containers():
+        if container.name == name:
+            return container.image.short_id[7:]
 
 def current_running_containers():
     return client.containers.list(filters={'status': 'running'})
@@ -62,16 +67,18 @@ def get_container_names(containers):
 
 def delete_container(name):
     container = get_container_by_name(name)
-    stop_container(container)
+    container.stop()
     container.remove()
     remove_plugin(name)
             
 def rename_container(old_name, new_name):
+    image = get_container_image(old_name)
+    print(image)
     container = get_container_by_name(old_name)
-    stop_container(container)
-    container.rename(new_name)
-    container.start()
-    edit_plugin(old_name, new_name)
+    print(container)
+    delete_container(old_name)
+    print(new_name)
+    create_new_plugin(image, new_name)
 
     
 if __name__ == '__main__':

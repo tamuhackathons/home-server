@@ -1,7 +1,6 @@
 import configparser, socket
 
 config = configparser.ConfigParser()
-config.read('plugins/plugins_config.ini')
 
 def url_exists(url):
     try:
@@ -11,6 +10,7 @@ def url_exists(url):
         return False
 
 def create_dictionary():
+    config.read('plugins/plugins_config.ini')
     plugins = {}
     for plugin in config.sections():
         plugins[plugin] = {}
@@ -24,17 +24,26 @@ def write_config():
         config.write(config_file)
 
 def add_plugin(plugin_name, url):
+    config.read('plugins/plugins_config.ini')
     config.add_section(plugin_name)
     config.set(plugin_name, "name", plugin_name)
-    config.set(plugin_name, "url", url)
+    if url.startswith('http'):
+        config.set(plugin_name, "url", url)
+    else:
+        config.set(plugin_name, "url", f'http://{url}')
     write_config()
         
 def remove_plugin(plugin_name):
+    print(config.sections())
+    config.read('plugins/plugins_config.ini')
+    print(config.sections())
     config.remove_section(plugin_name)
+    print(config.sections())
     
     write_config()
 
 def edit_plugin(plugin_name, new_name):
+    config.read('plugins/plugins_config.ini')
     try:
         url = config[plugin_name]['url']
         
@@ -45,6 +54,7 @@ def edit_plugin(plugin_name, new_name):
         pass
     
 def accessable_plugins():
+    config.read('plugins/plugins_config.ini')
     plugins = {}
     
     for plugin in config.sections():
