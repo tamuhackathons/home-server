@@ -1,6 +1,7 @@
 from flask import Flask, render_template, jsonify, request, redirect
-from plugins.plugin_parser import create_dictionary, add_plugin, edit_plugin, remove_plugin
-from containers.docker_helper import current_running_containers, create_new_plugin, get_container_names, rename_container, delete_container, get_all_containers, stop_container, start_container
+from plugins.plugin_parser import *
+from containers.docker_helper import *
+from sysinfo.sys_info import *
 import configparser, time
 
 config = configparser.ConfigParser()
@@ -87,6 +88,30 @@ def stop_con(name):
     stop_container(name)
     
     return redirect('/')
+
+@app.route('/cpu')
+def get_cpu_inf():
+    return jsonify(cpu_info())
+
+@app.route('/memory')
+def get_mem_inf():
+    return jsonify(memory_info())
+
+@app.route('/disk')
+def get_dsk_inf():
+    return jsonify(disk_info())
+
+@app.route('/network')
+def get_net_inf():
+    return jsonify(network_info())
+
+@app.route('/sensor')
+def get_sen_inf():
+    return jsonify(sensor_info())
+
+@app.route('/user')
+def get_usr_inf():
+    return jsonify(user_info())
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)
