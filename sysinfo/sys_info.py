@@ -41,10 +41,15 @@ def user_info():
     u = psutil.users()
     return {'users': [dict(item._asdict()) for item in u]}
 
+def return_all_info():
+    cpu = {'cpu': cpu_info()}
+    mem = {'memory': memory_info()}
+    dsk = {'disk': disk_info()}
+    net = {'network': network_info()}
+    sen = {'sensors': sensor_info()}
+    usr = {'users': user_info()}
+    
+    return {**cpu, **mem, **dsk, **net, **sen, **usr}
+
 if __name__ == '__main__':
-    print(cpu_info(),'\n')
-    print(memory_info(),'\n')
-    print(disk_info(),'\n')
-    print(network_info(),'\n')
-    print(sensor_info(),'\n')
-    print(user_info(),'\n')
+    print(return_all_info())

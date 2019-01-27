@@ -113,5 +113,9 @@ def get_sen_inf():
 def get_usr_inf():
     return jsonify(user_info())
 
+@app.route('/sys')
+def get_all_sys():
+    return jsonify(return_all_info())
+
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)
