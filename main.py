@@ -18,7 +18,7 @@ def index():
 
 @app.route('/home')
 def home():
-    return render_template('home.html', containers = get_all_containers())
+    return render_template('home.html', port = PORT, containers = get_all_containers())
 
 @app.route('/<plugin>/')
 def plugins(plugin):
