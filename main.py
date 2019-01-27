@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, redirect
 from plugins.plugin_parser import create_dictionary, add_plugin, edit_plugin, remove_plugin
-from containers.docker_helper import current_running_containers, create_new_plugin, get_container_names, rename_container, delete_container, get_all_containers
+from containers.docker_helper import current_running_containers, create_new_plugin, get_container_names, rename_container, delete_container, get_all_containers, stop_container, start_container
 import configparser
 
 config = configparser.ConfigParser()
@@ -76,6 +76,17 @@ def delete_app():
     except:
         return jsonify({ 'status': 'FAILED' })
     
+@app.route('/start/<name>')
+def start_con(name):
+    start_container(name)
+    
+    return redirect('/')
+
+@app.route('/stop/<name>')
+def stop_con(name):
+    stop_container(name)
+    
+    return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, host=HOST, port=PORT)
