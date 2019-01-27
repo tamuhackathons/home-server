@@ -76,13 +76,13 @@ def delete_app():
     except:
         return jsonify({ 'status': 'FAILED' })
     
-@app.route('/start/<name>')
+@app.route('/start/<name>', methods=['POST'])
 def start_con(name):
     start_container(name)
     
     return redirect('/')
 
-@app.route('/stop/<name>')
+@app.route('/stop/<name>', methods=['POST'])
 def stop_con(name):
     stop_container(name)
     
