@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, redirect
 from plugins.plugin_parser import create_dictionary, add_plugin
-from containers.docker_helper import current_running_containers, create_new_plugin
+from containers.docker_helper import current_running_containers, create_new_plugin, get_container_names
 import configparser
 
 config = configparser.ConfigParser()
@@ -18,7 +18,7 @@ def index():
 
 @app.route('/home')
 def home():
-    return render_template('home.html', containers = current_running_containers())
+    return render_template('home.html', containers = get_container_names(current_running_containers()))
 
 @app.route('/<plugin>/')
 def plugins(plugin):

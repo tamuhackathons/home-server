@@ -18,11 +18,19 @@ def get_free_tcp_port():
     
     return port
 
+def get_container_by_name(name):
+    for container in get_all_containers():
+        if container.name == name:
+            return container
+
 def current_running_containers():
     return client.containers.list(filters={'status': 'running'})
 
 def current_stopped_containers():
     return client.containers.list(filers={'status': 'exited'})
+
+def get_all_containers():
+    return client.containers.list()
 
 def create_new_plugin(docker_url, name):
     try:
@@ -40,16 +48,30 @@ def create_new_plugin(docker_url, name):
     return 400
     
 def stop_container(name):
-    for container in current_running_containers():
-        if container.name == name:
-            container.stop()
-            break
+    container = get_container_by_name(name)
+    container.stop()
         
 def start_container(name):
-    for container in current_stopped_containers():
-        if container.name == name:
-            container.start()
+    container = get_container_by_name(name)
+    container.start()
     
+def get_container_names(containers):
+    names = None
+    
+    for container in containers:
+        names.append(container.name)
+        
+    return names
 
+def delete_container(name):
+    container = get_container_by_name(name)
+    stop_container(container)
+    container.remove()
+            
+def rename_container(old_name, new_name):
+    container = get_container_by_name(old_name)
+    stop_container(container)
+    container.rename(new_name)
+    
 if __name__ == '__main__':
     print(current_running_containers())
