@@ -25,7 +25,7 @@ def current_stopped_containers():
     return client.containers.list(filters={'status': 'exited'})
 
 def get_all_containers():
-    return client.containers.list()
+    return client.containers.list(all=True)
 
 def create_new_plugin(docker_url, name):
     try:

@@ -9,9 +9,26 @@
     <h1>Welcome to your Home Server!</h1>
     <p>Below you can see some statistics from your server</p>
 
-    {# {% for item in containers $} #}
+    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+            <tr>
+                <th class="mdl-data-table__cell--non-numeric">Container Name</th>
+                <th class="mdl-data-table__cell--non-numeric">ID</th>
+                <th class="mdl-data-table__cell--non-numeric">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in containers %}
 
-    {# {% endfor %} #}
+            <tr>
+                <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['Name'] }}</td>
+                <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['Id'] }}</td>
+                <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['State']['Status'] }}</td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
 
     <style>
         body {

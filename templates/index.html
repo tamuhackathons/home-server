@@ -7,29 +7,45 @@
 		<!-- <link rel="stylesheet" href="/static/material/material.cyan-red.min.css"> -->
 </head>
 <body>
-	<div id="sidebar">
-		<h1>
-			Home <br>
-			Server
-		</h1>
-		<hr>
-		<a href='http://localhost:{{port}}/addplugin'><button id="add-app" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add App</button></a>
-		<ul>
-			<li class="mdl-list__item" onclick="onAppClick('http://localhost:{{port}}/home')">Home</li>
-		{% for item in apps %}
-			<li onclick="onAppClick('{{ apps[item].url }}')" class="mdl-list__item">{{ apps[item].name }}</li>
-		{% endfor %}
-		</ul>
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
+		<div class="mdl-layout__drawer">
+			<span class="mdl-layout-title">HomeServer</span>
+			<nav class="mdl-navigation">
+				<div id="action-buttons">
+					<a href='http://localhost:{{port}}/addplugin'><button id="add-app" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Add App</button></a>
+					<a href='http://localhost:{{port}}/editapps'><button id="edit-apps" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Edit Apps</button></a>
+				</div>
+				<hr>
+				<li class="mdl-navigation__link" onclick="onAppClick('http://localhost:{{port}}/home')">Home</li>
+				{% for item in apps %}
+					<li onclick="onAppClick('{{ apps[item].url }}')" class="mdl-navigation__link">{{ apps[item].name }}</li>
+				{% endfor %}
+			</nav>
+		</div>
+		<main class="mdl-layout__content">
+			<div class="page-content"><iframe id="content" src="http://localhost:{{port}}/home"></iframe></div>
+		</main>
 	</div>
-	<iframe id="content" src="http://localhost:{{port}}/home"></iframe>
+
 	<script> 
 		function onAppClick(url){
 			document.getElementById("content").src = url;
 		}
 	</script>
 	<style>
+		#action-buttons {
+			display: flex;
+			margin: auto;
+		}
+
+		#action-buttons > a {
+			flex-grow: 1;
+			margin: 4px;
+		}
+
 		body {
 			display: flex;
+			height: 100vh;
 		}
 
 		#sidebar {
@@ -41,6 +57,12 @@
 		#content {
 			flex-grow: 5;
 			border: none;
+			height: 100%;
+			width: 100%;
+		}
+
+		.page-content {
+			height: 100vh;
 		}
 	</style>
 </body>
