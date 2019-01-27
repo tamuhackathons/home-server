@@ -11,7 +11,7 @@
             <h1 class="mdl-card__title-text">Add your server application</h1>
         </div>
         <div class="mdl-card__actions mdl-card--border">
-            <form method="POST" action="http://localhost:{{port}}/addplugin">
+            <form method="POST" action="http://localhost:{{port}}/addplugin" name="pluginForm">
                 <table>
                     <tbody>
                         <tr>
@@ -19,12 +19,12 @@
                             <td><input name="name" type="text" minlength="2" required autofocus></td>
                         </tr>
                         <tr>
-                            <td><label for="url">URL:</label></td>
-                            <td><input name="url" type="url" required></td>
+                            <td><label for="url">Path:</label></td>
+                            <td><input name="url" type="text" required></td>
                         </tr>
                         <tr>
-                            <td><label for="url_option">Docker Repository URL (checked) / Plain URL (unchecked):</label></td>
-                            <td><input name="url_option" type="checkbox" checked onclick="changeUrlType()"></td>
+                            <td><label for="url_option">Docker Repository Path / Plain URL (unchecked):</label></td>
+                            <td><input name="url_option" type="checkbox" checked onclick="changeUrlType(this)"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -34,7 +34,12 @@
     </div>
 
     <script>
-        function changeUrlType() {
+        function changeUrlType(checkbox) {
+            if(checkbox.checked) {
+                document.pluginForm.url.type = 'text'
+            } else {
+                document.pluginForm.url.type = 'url'
+            }
         }
     </script>
 

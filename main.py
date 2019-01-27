@@ -44,7 +44,7 @@ def add_app():
         # URL
         add_plugin(app_name, app_name, url)
 
-    return redirect('/addpluginstatus/{}'.format(status))
+    return redirect('/')
 
 @app.route('/addpluginstatus/<status>')
 def add_app_status(status):
