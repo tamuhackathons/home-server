@@ -5,26 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <link rel="stylesheet" href="/static/material/material.min.css">
 </head>
-<body>
-    <div class="mdl-card mdl-shadow--2dp"
-        <h1>Add your server application</h1>
-
-        <form method="POST" action="http://localhost:{{port}}/addplugin">
-            <label for="name">App Name:</label>
-            <input name="name" type="text" minlength="2" required autofocus> <br>
-            <label for="url">URL:</label>
-            <input name="url" type="url" required> <br>
-            <label for="url_option">Docker Repository URL (checked) / Plain URL (unchecked)</label>
-            <input name="url_option" type="checkbox" required checked> <br>
-            <input name="submit" type="submit" value="Add">
-        </form>
+<body class="center">
+    <div class="mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title">
+            <h1 class="mdl-card__title-text">Add your server application</h1>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <form method="POST" action="http://localhost:{{port}}/addplugin">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td><label for="name">App Name:</label></td>
+                            <td><input name="name" type="text" minlength="2" required autofocus></td>
+                        </tr>
+                        <tr>
+                            <td><label for="url">URL:</label></td>
+                            <td><input name="url" type="url" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="url_option">Docker Repository URL (checked) / Plain URL (unchecked):</label></td>
+                            <td><input name="url_option" type="checkbox" checked onclick="changeUrlType()"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <input id="submit" name="submit" type="submit" value="Add">
+            </form>
+        </div>
     </div>
+
+    <script>
+        function changeUrlType() {
+        }
+    </script>
 
     <style>
         body {
             padding: 12px;
             width: 100%;
             overflow: hidden;
+        }
+
+        .mdl-card {
+            width: 512px;
+        }
+
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        td:not(:first-child) {
+            padding-top: 12px;
+        }
+
+        #submit {
+            padding: 4px;
+            margin: 4px;
         }
     </style>
 </body>
