@@ -13,7 +13,7 @@
 			Server
 		</h1>
 		<hr>
-		<button id="add-app" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add App</button>
+		<a href='http://localhost:{{port}}/addplugin'><button id="add-app" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Add App</button></a>
 		<ul>
 			<li class="mdl-list__item" onclick="onAppClick('http://localhost:{{port}}/home')">Home</li>
 		{% for item in apps %}

@@ -33,6 +33,9 @@ def plugin_page():
 def add_app():
     app_name = request.form.get('name')
     docker_url = request.form.get('docker_url')
+    checkbox = request.form.get('url_option')
+
+    print(checkbox)
 
     status = None
     return redirect('/addpluginstatus/{}'.format(status))
