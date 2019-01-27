@@ -47,7 +47,7 @@ def accessable_plugins():
     
     for plugin in config.sections():
         if ('http://localhost' or 'https://localhost') not in config[plugin]['url']:
-            plugins[plugin] = {'is_accessable': url_exists('config[plugin]['url']')}
+            plugins[plugin] = {'is_accessable': url_exists(config[plugin]['url'])}
     
     return plugins
 

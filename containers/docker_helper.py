@@ -1,6 +1,6 @@
 import docker, configparser, socket, sys
 sys.path.append('.')
-from plugins.plugin_parser import add_plugin
+from plugins.plugin_parser import add_plugin, remove_plugin
 
 client = docker.from_env()
 
@@ -62,6 +62,7 @@ def delete_container(name):
     container = get_container_by_name(name)
     stop_container(container)
     container.remove()
+    remove_plugin(name)
             
 def rename_container(old_name, new_name):
     container = get_container_by_name(old_name)
