@@ -31,7 +31,7 @@ def create_new_plugin(docker_url, name):
     try:
         bind_port = get_free_tcp_port()
         client.containers.run(docker_url, name=name, ports={'80/tcp':str(bind_port)}, detach=True)
-        add_plugin(name, name, f'localhost:{bind_port}')
+        add_plugin(name, f'localhost:{bind_port}')
         return 200
     except docker.errors.ContainerError as e:
         print(e)
