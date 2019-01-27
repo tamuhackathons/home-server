@@ -9,28 +9,87 @@
     <h1>Welcome to your Home Server!</h1>
     <p>Below you can see some statistics from your server</p>
 
-    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-        <thead>
-            <tr>
-                <th class="mdl-data-table__cell--non-numeric">Container Name</th>
-                <th class="mdl-data-table__cell--non-numeric">ID</th>
-                <th class="mdl-data-table__cell--non-numeric">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in containers %}
-
-            <tr>
-                <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['Name'] }}</td>
-                <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['Id'] }}</td>
-                <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['State']['Status'] }}</td>
-                <td><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="startContainer('{{ item.attrs['Name'] }}')">Start</button></td>
-                <td><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="stopContainer('{{ item.attrs['Name'] }}')">Stop</button></td>
-            </tr>
-
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="flex">
+        <div id="content-info">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric">Container Name</th>
+                        <th class="mdl-data-table__cell--non-numeric">ID</th>
+                        <th class="mdl-data-table__cell--non-numeric">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in containers %}
+        
+                    <tr>
+                        <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['Name'] }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['Id'] }}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{ item.attrs['State']['Status'] }}</td>
+                        <td><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="startContainer('{{ item.attrs['Name'] }}')">Start</button></td>
+                        <td><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="stopContainer('{{ item.attrs['Name'] }}')">Stop</button></td>
+                    </tr>
+        
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id="server-info" class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h1 class="mdl-card__title-text">Server Info</h1>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                    <!-- CPI -->
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">CPU</th>
+                            <th>Core Count</th>
+                            <th>Utilization (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric"></td>
+                            <td id="cpu-count"></td>
+                            <td id="cpu-usage"></td>
+                        </tr>
+                    </tbody>
+                    <!-- Disk -->
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Disk</th>
+                            <th>Used (GB)</th>
+                            <th>Total (GB)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric"></td>
+                            <td id="disk-used"></td>
+                            <td id="disk-total"></td>
+                        </tr>
+                    </tbody>
+                    <!-- Memory -->
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">Memory</th>
+                            <th>Swap Used (%)</th>
+                            <th>Virtual Used (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric"></td>
+                            <td id="swap-used"></td>
+                            <td id="virtual-used"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
 
     <script>
         function stopContainer(name) {
@@ -68,13 +127,59 @@
                 parent.location.reload()
             }) // parses response to JSON)
         }
+
+        function updateServerInfo() {
+            fetch('http://localhost:{{port}}/sys', {
+                method: "GET", // *GET, POST, PUT, DELETE, etc.
+                // mode: "cors", // no-cors, cors, *same-origin
+                // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                // credentials: "same-origin", // include, *same-origin, omit
+                referrer: "no-referrer", // no-referrer, *client
+            })
+            .then(response => response.json()).then(json => {
+                // console.log('RESPONSE', json)
+                // CPI
+                document.getElementById('cpu-count').innerHTML = json['cpu']['cpu_count']
+                document.getElementById('cpu-usage').innerHTML = json['cpu']['cpu_percent']
+
+                // DISK
+                document.getElementById('disk-total').innerHTML = Math.round(json['disk']['usage']['total']/1073741824*100)/100
+                document.getElementById('disk-used').innerHTML = Math.round(json['disk']['usage']['used']/1073741824*100)/100
+
+                // Memory
+                document.getElementById('swap-used').innerHTML = json['memory']['swap']['percent']
+                document.getElementById('virtual-used').innerHTML = json['memory']['virtual_mem']['percent']
+
+            }) // parses response to JSON)
+        }
+
+        setInterval(updateServerInfo, 1000)
+        // updateServerInfo()
     </script>
 
     <style>
         body {
-            padding: 12px;
-            width: 100%;
+            padding: 24px;
+            width: 95%;
             overflow: hidden;
+            margin: 0;
+        }
+
+        .flex {
+            display: flex;
+            flex-wrap: wrap-reverse;
+            /* align-items: stretch; */
+        }
+
+        #content-info {
+            flex-grow: 1;
+            flex-basis: 1;
+        }
+
+        #server-info {
+            flex-grow: 1;
+            flex-basis: 1;
+            margin-right: 24px;
         }
     </style>
 </body>

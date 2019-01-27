@@ -2,7 +2,7 @@ import psutil
 
 def cpu_info():
     cpu_times = {'cpu_times': dict(psutil.cpu_times()._asdict())}
-    cpu_percent = {'cpu_percent': psutil.cpu_percent(percpu=True)}
+    cpu_percent = {'cpu_percent': psutil.cpu_percent(percpu=False)}
     cpu_count = {'cpu_count': psutil.cpu_count()}
     
     return {**cpu_times, **cpu_percent, **cpu_count}
@@ -29,13 +29,17 @@ def network_info():
     return {**net_io, **net_if}
 
 def sensor_info():
-    tmp = psutil.sensors_temperatures()
-    temps = {'temps': [[dict(t._asdict()) for t in tmp[item]] for item in tmp]}
-    tmp = psutil.sensors_fans()
-    fans = {'fans': [[dict(t._asdict()) for t in tmp[item]] for item in tmp]}
-    battery = {'battery': dict(psutil.sensors_battery()._asdict())}
-    
-    return {**temps, **fans, **battery}
+    try: 
+        tmp = psutil.sensors_temperatures()
+        temps = {'temps': [[dict(t._asdict()) for t in tmp[item]] for item in tmp]}
+        tmp = psutil.sensors_fans()
+        fans = {'fans': [[dict(t._asdict()) for t in tmp[item]] for item in tmp]}
+        battery = {'battery': dict(psutil.sensors_battery()._asdict())}
+        
+        return {**temps, **fans, **battery, 'status': 'SUCCESS'}
+    except:
+        return { 'status': 'FAILED' }
+        
 
 def user_info():
     u = psutil.users()
