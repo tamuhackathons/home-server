@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Home Server</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <link rel="stylesheet" href="/static/material/material.min.css">
+        <script src="/static/material/material.min.js"></script>
+		<!-- <link rel="stylesheet" href="/static/material/material.cyan-red.min.css"> -->
+</head>
+<body>
+    <a id='home' href="http://localhost:{{port}}/"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Home</button></a>
+	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+        <thead>
+            <tr>
+                <th class="mdl-data-table__cell--non-numeric">App Name</th>
+                <th class="mdl-data-table__cell--non-numeric">Location (Repository/URL)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in apps %}
+
+            <tr id="{{ apps[app].name }}-row">
+                <td id="{{ apps[app].name }}-name" class="mdl-data-table__cell--non-numeric">{{ apps[app].name }}</td>
+                <td id="{{ apps[app].name }}-url" class="mdl-data-table__cell--non-numeric">{{ apps[app].url }}</td>
+                <td class="mdl-data-table__cell--non-numeric"><button id="{{ apps[app].name }}-edit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="showEdit('{{ apps[app].name }}', '{{ apps[app].name }}')">Edit</button></td>
+                <td class="mdl-data-table__cell--non-numeric"><button id="{{ apps[app].name }}-delete" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="deleteApp('{{ apps[app].name }}', '{{ apps[app].name }}')">DELETE</button></td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="status-toast" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+
+    <script>
+        function snackbar(name, text) {
+            let snackbarContainer = document.querySelector('#status-toast');
+            var data = {message: name + ': ' + text};
+            snackbarContainer.MaterialSnackbar.showSnackbar(data);
+        }
+
+        function changeToEdit(name, n_name) {
+            document.getElementById(name + '-name').innerHTML = n_name
+
+            document.getElementById(name + '-edit').onclick = function() { showEdit(name, n_name) }
+            document.getElementById(name + '-delete').onclick = function() { deleteApp(name, n_name) }
+            
+            document.getElementById(name + '-edit').innerHTML = 'Edit'
+        }
+
+        function saveChange(name, n_name) {
+            let new_name = document.getElementById(name+'-input').value
+            let url = document.getElementById(name+'-url').innerHTML
+
+            let formData = new FormData()
+            formData.append('name', name)
+            formData.append('new_name', new_name)
+            formData.append('url', url)
+            fetch('http://localhost:{{port}}/editapps', {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                // mode: "cors", // no-cors, cors, *same-origin
+                // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                // credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                    // "Content-Type": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                redirect: "follow", // manual, *follow, error
+                referrer: "no-referrer", // no-referrer, *client
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json()).then(json => {
+                if(json.status) {
+                    snackbar(new_name, json.status)
+                    if(json.status == 'SUCCESS') {
+                        changeToEdit(name, new_name)
+                        document.getElementById(n_name + '-row').id = new_name + '-row'
+                    } else {
+                        changeToEdit(name, n_name)
+                    }
+                }
+
+            }) // parses response to JSON)
+
+            changeToEdit(name, new_name)
+        }
+
+        function showEdit(name, n_name) {
+            document.getElementById(name + '-name').innerHTML = '<input id="' + name + '-input" value="' + n_name + '" type="text">'
+
+            document.getElementById(name + '-edit').onclick = function() { saveChange(name, n_name) }
+            document.getElementById(name + '-edit').innerHTML = 'Save'
+        }
+
+        function removeRow(name) {
+            document.getElementById(name+'-row').outerHTML = ''
+        }
+
+        function deleteApp(name, n_name) {
+            let url = document.getElementById(name+'-url').innerHTML
+
+            let formData = new FormData()
+            formData.append('name', n_name)
+            formData.append('url', url)
+            fetch('http://localhost:{{port}}/deleteapp', {
+                method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+                // mode: "cors", // no-cors, cors, *same-origin
+                // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                // credentials: "same-origin", // include, *same-origin, omit
+                headers: {
+                    // "Content-Type": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                redirect: "follow", // manual, *follow, error
+                referrer: "no-referrer", // no-referrer, *client
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json()).then(json => {
+                if(json.status) {
+                    snackbar('DELETE ' + n_name, json.status)
+                    if(json.status == 'SUCCESS') {
+                        removeRow(n_name)
+                    } 
+                }
+
+            }) // parses response to JSON)
+        }
+    </script>
+</body>
+</html>
