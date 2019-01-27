@@ -44,7 +44,7 @@ def create_new_plugin(docker_url, name):
     
 def stop_container(name):
     container = get_container_by_name(name)
-    if ['exited', 'restarting', 'paused'] not in container.status:
+    if ('exited' or 'restarting' or 'paused') not in container.status:
         container.stop()
         
 def start_container(name):
