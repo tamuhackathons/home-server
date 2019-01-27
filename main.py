@@ -42,7 +42,7 @@ def add_app():
         status = 'SUCCESS' if create_new_plugin(url, app_name) == 200 else 'FAILED'
     elif(checkbox == 'off'):
         # URL
-        add_plugin(app_name, app_name, url)
+        add_plugin(app_name, url)
 
     return redirect('/')
 
