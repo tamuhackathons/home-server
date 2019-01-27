@@ -49,7 +49,7 @@ def stop_container(name):
         
 def start_container(name):
     container = get_container_by_name(name)
-    if ['running'] not in container.status:
+    if 'running' not in container.status:
         container.start()
     
 def get_container_names(containers):
