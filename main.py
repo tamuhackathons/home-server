@@ -60,9 +60,7 @@ def edit_apps_post():
     try:
         try:
             rename_container(request.form.get('name'), request.form.get('new_name'))
-        except docker.errors.APIError as e:
-            return jsonify({'status': 'FAILED'})
-        else:
+        except:
             edit_plugin(request.form.get('name'), request.form.get('new_name'))
             
         return jsonify({ 'status': 'SUCCESS'})
@@ -74,9 +72,7 @@ def delete_app():
     try:
         try:
             delete_container(request.form.get('name'))
-        except docker.errors.APIError as e:
-            return jsonify({ 'status': 'FAILED' })
-        else:
+        except:
             remove_plugin(request.form.get('name'))
         return jsonify({ 'status': 'SUCCESS'})
     except:
