@@ -1,7 +1,14 @@
-import configparser
+import configparser, socket
 
 config = configparser.ConfigParser()
 config.read('plugins/plugins_config.ini')
+
+def url_exists(url):
+    try:
+        socket.gethostbyname(url)
+        return True
+    except socket.gaierror as e:
+        return False
 
 def create_dictionary():
     plugins = {}
@@ -34,8 +41,15 @@ def edit_plugin(plugin_name, new_name):
         add_plugin(new_name, url)
     except:
         pass
+    
+def accessable_plugins():
+    plugins = {}
+    
+    for plugin in config.sections():
+        if ('http://localhost' or 'https://localhost') not in config[plugin]['url']:
+            plugins[plugin] = {'is_accessable': url_exists('config[plugin]['url']')}
+    
+    return plugins
 
 if __name__ == '__main__':
-    print(create_dictionary())
-    edit_plugin('some_plugin', 'test')
-    print(create_dictionary())
+    print(accessable_plugins())
