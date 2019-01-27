@@ -34,9 +34,12 @@
 
     <script>
         function stopContainer(name) {
+            if(name.startsWith('/')) {
+                name = name.substring(1)
+            }
             fetch('http://localhost:{{port}}/stop/'+name, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
-                // mode: "cors", // no-cors, cors, *same-origin
+                mode: "no-cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
                 // credentials: "same-origin", // include, *same-origin, omit
                 redirect: "follow", // manual, *follow, error
@@ -48,9 +51,12 @@
         }
 
         function startContainer(name) {
+            if(name.startsWith('/')) {
+                name = name.substring(1)
+            }
             fetch('http://localhost:{{port}}/start/'+name, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
-                // mode: "cors", // no-cors, cors, *same-origin
+                mode: "no-cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
                 // credentials: "same-origin", // include, *same-origin, omit
                 redirect: "follow", // manual, *follow, error
