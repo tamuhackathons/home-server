@@ -19,13 +19,13 @@ def get_container_by_name(name):
             return container
 
 def current_running_containers():
-    return client.containers.list(filters={'status': 'running'})
+    return client.containers(filters={'status': 'running'})
 
 def current_stopped_containers():
-    return client.containers.list(filers={'status': 'exited'})
+    return client.containers(filters={'status': 'exited'})
 
 def get_all_containers():
-    return client.containers.list()
+    return client.containers()
 
 def create_new_plugin(docker_url, name):
     try:
