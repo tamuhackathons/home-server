@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, redirect
-from plugins.plugin_parser import create_dictionary
-from containers.docker_helper import current_running_containers
+from plugins.plugin_parser import create_dictionary, add_plugin
+from containers.docker_helper import current_running_containers, create_new_plugin
 import configparser
 
 config = configparser.ConfigParser()
@@ -32,12 +32,18 @@ def plugin_page():
 @app.route('/addplugin', methods=['POST'])
 def add_app():
     app_name = request.form.get('name')
-    docker_url = request.form.get('docker_url')
+    url = request.form.get('url')
     checkbox = request.form.get('url_option')
 
-    print(checkbox)
+    status = 'SUCCESS'
 
-    status = None
+    if(checkbox == 'on'):
+        # Docker
+        status = 'SUCCESS' if create_new_plugin(url, app_name) == 200 else 'FAILED'
+    elif(checkbox == 'off'):
+        # URL
+        add_plugin(app_name, app_name, url)
+
     return redirect('/addpluginstatus/{}'.format(status))
 
 @app.route('/addpluginstatus/<status>')
