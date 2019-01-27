@@ -45,8 +45,9 @@
                 redirect: "follow", // manual, *follow, error
                 referrer: "no-referrer", // no-referrer, *client
             })
-            .then(response => response.json()).then(json => {
+            .then(response => console.log('Received')).then(json => {
                 console.log('Received')
+                parent.location.reload()
             }) // parses response to JSON)
         }
 
@@ -62,8 +63,9 @@
                 redirect: "follow", // manual, *follow, error
                 referrer: "no-referrer", // no-referrer, *client
             })
-            .then(response => response.json()).then(json => {
+            .then(response => console.log('Received')).then(json => {
                 console.log('Received')
+                parent.location.reload()
             }) // parses response to JSON)
         }
     </script>
