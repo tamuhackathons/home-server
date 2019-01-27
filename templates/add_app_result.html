@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Home Server</title>
+    <title>Add App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <link rel="stylesheet" href="/static/material/material.min.css">
 </head>
 <body>
-    <h1>Welcome to your Home Server!</h1>
-    <p>Below you can see some statistics from your server</p>
 
-    {# {% for item in containers $} #}
+    <div id='status'>{{status}}</div>
 
-    {# {% endfor %} #}
+    <a id='home' href="http://localhost:{{port}}/">Home</a>
 
     <style>
         body {

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <link rel="stylesheet" href="/static/material/material.min.css">
+</head>
+<body>
+    <h1>Add your server application</h1>
+
+    <form method="POST" action="http://localhost:{{port}}/addplugin">
+        <label for="name">App Name:</label>
+        <input name="name" type="text" minlength="2" required autofocus> <br>
+        <label for="docker_url">URL:</label>
+        <input name="docker_url" type="url" required> <br>
+        <label for="url_option">Docker Repository URL (checked) / Plain URL (unchecked)</label>
+        <input name="url_option" type="checkbox" required checked> <br>
+        <input name="submit" type="submit" value="Add">
+    </form>
+
+    <style>
+        body {
+            padding: 12px;
+            width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</body>
+</html>
