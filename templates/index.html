@@ -12,18 +12,18 @@
 			<span class="mdl-layout-title">HomeServer</span>
 			<nav class="mdl-navigation">
 				<div id="action-buttons">
-					<a href='http://localhost:{{port}}/addplugin'><button id="add-app" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Add App</button></a>
-					<a href='http://localhost:{{port}}/editapps'><button id="edit-apps" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Edit Apps</button></a>
+					<a href='/addplugin'><button id="add-app" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Add App</button></a>
+					<a href='/editapps'><button id="edit-apps" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">Edit Apps</button></a>
 				</div>
 				<hr>
-				<li class="mdl-navigation__link" onclick="onAppClick('http://localhost:{{port}}/home')">Home</li>
+				<li class="mdl-navigation__link" onclick="onAppClick('/home')">Home</li>
 				{% for item in apps %}
 					<li onclick="onAppClick('{{ apps[item].url }}')" class="mdl-navigation__link">{{ apps[item].name }}</li>
 				{% endfor %}
 			</nav>
 		</div>
 		<main class="mdl-layout__content">
-			<div class="page-content"><iframe id="content" src="http://localhost:{{port}}/home"></iframe></div>
+			<div class="page-content"><iframe id="content" src="/home"></iframe></div>
 		</main>
 	</div>
 
@@ -44,7 +44,7 @@
 		}
 
 		body {
-			display: flex;
+			/* display: flex; */
 			height: 100vh;
 		}
 

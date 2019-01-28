@@ -96,7 +96,7 @@
             if(name.startsWith('/')) {
                 name = name.substring(1)
             }
-            fetch('http://localhost:{{port}}/stop/'+name, {
+            fetch(`http://${window.location.hostname}:{{port}}/stop/${name}`, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
                 mode: "no-cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -114,7 +114,7 @@
             if(name.startsWith('/')) {
                 name = name.substring(1)
             }
-            fetch('http://localhost:{{port}}/start/'+name, {
+            fetch(`http://${window.location.hostname}:{{port}}/start/${name}`, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
                 mode: "no-cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -129,7 +129,7 @@
         }
 
         function updateServerInfo() {
-            fetch('http://localhost:{{port}}/sys', {
+            fetch(`http://${window.location.hostname}:{{port}}/sys`, {
                 method: "GET", // *GET, POST, PUT, DELETE, etc.
                 // mode: "cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -179,7 +179,7 @@
         #server-info {
             flex-grow: 1;
             flex-basis: 1;
-            margin-right: 24px;
+            /* margin-right: 24px; */
         }
     </style>
 </body>

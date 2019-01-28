@@ -8,7 +8,7 @@
 		<!-- <link rel="stylesheet" href="/static/material/material.cyan-red.min.css"> -->
 </head>
 <body>
-    <a id='home' href="http://localhost:{{port}}/"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Home</button></a>
+    <a id='home' href="/"><button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Home</button></a>
     <p>Updating Docker containers might take some time. Be patient</p>
 	<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
         <thead>
@@ -62,7 +62,7 @@
             formData.append('name', name)
             formData.append('new_name', new_name)
             formData.append('url', url)
-            fetch('http://localhost:{{port}}/editapps', {
+            fetch(`http://${window.location.hostname}:{{port}}/editapps`, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
                 // mode: "cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -89,8 +89,6 @@
                 }
 
             }) // parses response to JSON)
-
-            //changeToEdit(name, new_name)
         }
 
         function showEdit(name, n_name) {
@@ -112,7 +110,7 @@
             let formData = new FormData()
             formData.append('name', n_name)
             formData.append('url', url)
-            fetch('http://localhost:{{port}}/deleteapp', {
+            fetch(`http://${window.location.hostname}:{{port}}/deleteapp`, {
                 method: "DELETE", // *GET, POST, PUT, DELETE, etc.
                 // mode: "cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
