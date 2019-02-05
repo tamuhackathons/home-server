@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect
+from flask import Blueprint, redirect, request, jsonify
 from containers.docker_helper import *
 
 docker_api = Blueprint('docker_api', __name__)
@@ -9,7 +9,7 @@ def add_app():
     url = request.form.get('url')
     status = 'SUCCESS' if create_new_plugin(url, app_name) == 200 else 'FAILED'
     
-    redirect('/')
+    return redirect('/')
     
 @docker_api.route('/start/<name>', methods=['POST'])
 def start_con(name):

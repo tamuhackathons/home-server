@@ -18,13 +18,23 @@
             </tr>
         </thead>
         <tbody>
-            {% for app in apps %}
+            {% for app in apps['Docker'] %}
 
-            <tr id="{{ apps[app].name }}-row">
-                <td id="{{ apps[app].name }}-name" class="mdl-data-table__cell--non-numeric">{{ apps[app].name }}</td>
-                <td id="{{ apps[app].name }}-url" class="mdl-data-table__cell--non-numeric">{{ apps[app].url }}</td>
-                <td class="mdl-data-table__cell--non-numeric"><button id="{{ apps[app].name }}-edit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="showEdit('{{ apps[app].name }}', '{{ apps[app].name }}')">Edit</button></td>
-                <td class="mdl-data-table__cell--non-numeric"><button id="{{ apps[app].name }}-delete" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="deleteApp('{{ apps[app].name }}', '{{ apps[app].name }}')">DELETE</button></td>
+            <tr id="{{ apps['Docker'][app].name }}-row">
+                <td id="{{ apps['Docker'][app].name }}-name" class="mdl-data-table__cell--non-numeric">{{ apps['Docker'][app].name }}</td>
+                <td id="{{ apps['Docker'][app].name }}-url" class="mdl-data-table__cell--non-numeric">{{ apps['Docker'][app].url }}</td>
+                <td class="mdl-data-table__cell--non-numeric"><button id="{{ apps['Docker'][app].name }}-edit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="showEdit('{{ apps['Docker'][app].name }}', '{{ apps['Docker'][app].name }}', 'docker')">Edit</button></td>
+                <td class="mdl-data-table__cell--non-numeric"><button id="{{ apps['Docker'][app].name }}-delete" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="deleteApp('{{ apps['Docker'][app].name }}', '{{ apps['Docker'][app].name }}', 'docker')">DELETE</button></td>
+            </tr>
+
+            {% endfor %}
+            {% for app in apps['Plugins'] %}
+
+            <tr id="{{ apps['Plugins'][app].name }}-row">
+                <td id="{{ apps['Plugins'][app].name }}-name" class="mdl-data-table__cell--non-numeric">{{ apps['Plugins'][app].name }}</td>
+                <td id="{{ apps['Plugins'][app].name }}-url" class="mdl-data-table__cell--non-numeric">{{ apps['Plugins'][app].url }}</td>
+                <td class="mdl-data-table__cell--non-numeric"><button id="{{ apps['Plugins'][app].name }}-edit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" onclick="showEdit('{{ apps['Plugins'][app].name }}', '{{ apps['Plugins'][app].name }}', 'plugins')">Edit</button></td>
+                <td class="mdl-data-table__cell--non-numeric"><button id="{{ apps['Plugins'][app].name }}-delete" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="deleteApp('{{ apps['Plugins'][app].name }}', '{{ apps['Plugins'][app].name }}', 'plugins')">DELETE</button></td>
             </tr>
 
             {% endfor %}
@@ -52,7 +62,7 @@
             document.getElementById(name + '-edit').innerHTML = 'Edit'
         }
 
-        function saveChange(name, n_name) {
+        function saveChange(name, n_name, type) {
             let new_name = document.getElementById(name+'-input').value
             let url = document.getElementById(name+'-url').innerHTML
             
@@ -62,7 +72,7 @@
             formData.append('name', name)
             formData.append('new_name', new_name)
             formData.append('url', url)
-            fetch(`http://${window.location.hostname}:{{port}}/editapps`, {
+            fetch(`http://${window.location.hostname}:{{port}}/${type}/edit`, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
                 // mode: "cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -102,15 +112,16 @@
             document.getElementById(name+'-row').outerHTML = ''
         }
 
-        function deleteApp(name, n_name) {
+        function deleteApp(name, n_name, type) {
             let url = document.getElementById(name+'-url').innerHTML
+            let deleteurl = `http://${window.location.hostname}:{{port}}/${type}/delete`
             
             snackbar(n_name, 'Trying to delete...')
 
             let formData = new FormData()
             formData.append('name', n_name)
             formData.append('url', url)
-            fetch(`http://${window.location.hostname}:{{port}}/deleteapp`, {
+            fetch(deleteurl, {
                 method: "DELETE", // *GET, POST, PUT, DELETE, etc.
                 // mode: "cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached

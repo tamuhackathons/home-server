@@ -11,7 +11,7 @@
             <h1 class="mdl-card__title-text">Add your server application</h1>
         </div>
         <div class="mdl-card__actions mdl-card--border">
-            <form method="POST" action="/addplugin" name="pluginForm">
+            <form method="POST" action="/docker/add" name="pluginForm">
                 <table>
                     <tbody>
                         <tr>
@@ -39,10 +39,13 @@
             if(checkbox.checked) {
                 document.pluginForm.url.type = 'text'
                 document.pluginForm.url.placeholder = 'user/repo'
+                document.pluginForm.action="/docker/add"
             } else {
                 document.pluginForm.url.type = 'url'
                 document.pluginForm.url.placeholder = 'http://localhost:5000'
+                document.pluginForm.action="/plugins/add"
             }
+            
         }
     </script>
 

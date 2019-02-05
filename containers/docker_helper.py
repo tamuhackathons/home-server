@@ -14,18 +14,18 @@ def write_config():
 def add_container(image, plugin_name, url, ports = {}, volumes = []):
     config.read('containers/docker_config.ini')
     
-    config.add_section(f'Docker-{imgae}')
+    config.add_section(f'Docker-{image}')
     
-    config.set(f'Docker-{imgae}', "name", plugin_name)
-    config.set(f'Docker-{imgae}', "ports", ports)
-    config.set(f'Docker-{imgae}', "volumes", volumes)
-    config.set(f'Docker-{imgae}', "url", url)
+    config.set(f'Docker-{image}', "name", plugin_name)
+    config.set(f'Docker-{image}', "ports", str(ports))
+    config.set(f'Docker-{image}', "volumes", str(volumes))
+    config.set(f'Docker-{image}', "url", url)
     
     write_config()
     
-def remove_container(imgae):
+def remove_container(image):
     config.read('containers/docker_config.ini')
-    config.remove_section(imgae)
+    config.remove_section(image)
     
     write_config()
     
