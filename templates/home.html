@@ -96,7 +96,7 @@
             if(name.startsWith('/')) {
                 name = name.substring(1)
             }
-            fetch(`http://${window.location.hostname}:{{port}}/stop/${name}`, {
+            fetch(`http://${window.location.hostname}:{{port}}/docker/stop/${name}`, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
                 mode: "no-cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -114,7 +114,7 @@
             if(name.startsWith('/')) {
                 name = name.substring(1)
             }
-            fetch(`http://${window.location.hostname}:{{port}}/start/${name}`, {
+            fetch(`http://${window.location.hostname}:{{port}}/docker/start/${name}`, {
                 method: "POST", // *GET, POST, PUT, DELETE, etc.
                 mode: "no-cors", // no-cors, cors, *same-origin
                 // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
