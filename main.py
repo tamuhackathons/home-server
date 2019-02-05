@@ -2,9 +2,9 @@ from flask import Flask, render_template, jsonify, request, redirect
 from plugins.plugins_api import plugin_api
 from sysinfo.system_api import system_api
 from containers.docker_api import docker_api
-from containers.docker_helper import get_all_containers
-from plugins.plugin_parser import create_dictionary
-import configparser, time
+from containers.docker_helper import get_all_containers, create_container_dictionary
+from plugins.plugin_parser import create_plugin_dictionary
+import configparser
 
 config = configparser.ConfigParser()
 config.read('main_config.ini')
@@ -20,7 +20,8 @@ app.register_blueprint(plugin_api, url_prefix='/plugins')
 
 @app.route('/')
 def index():
-    return render_template('index.html', port = PORT, apps = create_dictionary())
+    return render_template('index.html', port = PORT, apps = {'Docker': create_container_dictionary(),
+                                                              'Plugins': create_plugin_dictionary()})
 
 @app.route('/home')
 def home():
@@ -37,7 +38,8 @@ def add_app_status(status):
 
 @app.route('/editapps')
 def edit_apps_get():
-    return render_template('edit_apps.html', port = PORT, apps = create_dictionary())
+    apps = {'Docker': create_container_dictionary(), 'Plugins': create_plugin_dictionary()}
+    return render_template('edit_apps.html', port = PORT, apps = apps)
 
 
 if __name__ == '__main__':

@@ -4,18 +4,39 @@ from plugins.plugin_parser import remove_plugin, edit_plugin
 
 client = docker.from_env()
 
+def write_config():
+    with open('containers/docker_config.ini', 'w') as config_file:
+        config.write(config_file)
 
-def add_container(dockerfile, plugin_name, ports = [""], volumes = [""]):
+
+def add_container(image, plugin_name, url, ports = {}, volumes = []):
     config.read('containers/docker_config.ini')
     
-    config.add_section(f'Docker-{dockerfile}')
+    config.add_section(f'Docker-{imgae}')
     
-    config.set(f'Docker-{dockerfile}', "name", plugin_name)
-    config.set(f'Docker-{dockerfile}', "ports", ports)
-    config.set(f'Docker-{dockerfile}', "volumes", volumes)
-    config.set(f'Docker-{dockerfile}', "url", dockerfile)
+    config.set(f'Docker-{imgae}', "name", plugin_name)
+    config.set(f'Docker-{imgae}', "ports", ports)
+    config.set(f'Docker-{imgae}', "volumes", volumes)
+    config.set(f'Docker-{imgae}', "url", url)
     
     write_config()
+    
+def remove_container(imgae):
+    config.read('containers/docker_config.ini')
+    config.remove_section(imgae)
+    
+    write_config()
+    
+def create_container_dictionary():
+    config.read('containers/docker_config.ini')
+    containers = {}
+    
+    for container in config.sections():
+        containers[container] = {}
+        for data in config.options(container):
+            containers[container][data] = config.get(container, data)
+            
+    return containers
 
 def get_free_tcp_port():
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -44,11 +65,13 @@ def current_stopped_containers():
 def get_all_containers():
     return client.containers.list(all=True)
 
-def create_new_plugin(docker_url, name):
+def create_new_plugin(docker_url, name, port='80/tcp', ports={'80/tcp': 1234}, volumes=None):
     try:
-        bind_port = get_free_tcp_port()
-        client.containers.run(docker_url, name=name, ports={'80/tcp':str(bind_port)}, detach=True)
-        add_plugin(name, f'localhost:{bind_port}')
+        for port in ports:
+            ports[port] = str(get_free_tcp_port())
+        
+        client.containers.run(docker_url, name=name, ports=ports, volumes=volumes, detach=True)
+        add_container(docker_url, name, f'localhost:{ports[port]}', ports, volumes)
         return 200
     except docker.errors.ContainerError as e:
         print(e)
@@ -85,11 +108,8 @@ def delete_container(name):
             
 def rename_container(old_name, new_name):
     image = get_container_image(old_name)
-    print(image)
     container = get_container_by_name(old_name)
-    print(container)
     delete_container(old_name)
-    print(new_name)
     create_new_plugin(image, new_name)
 
     

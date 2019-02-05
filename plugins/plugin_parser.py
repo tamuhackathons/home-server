@@ -9,7 +9,7 @@ def url_exists(url):
     except socket.gaierror as e:
         return False
 
-def create_dictionary():
+def create_plugin_dictionary():
     config.read('plugins/plugins_config.ini')
     plugins = {}
     for plugin in config.sections():
