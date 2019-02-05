@@ -20,8 +20,8 @@ app.register_blueprint(plugin_api, url_prefix='/plugins')
 
 @app.route('/')
 def index():
-    return render_template('index.html', port = PORT, apps = {**create_container_dictionary(),
-                                                              **create_plugin_dictionary()})
+    return render_template('index.html', port = PORT, apps = {'Docker': create_container_dictionary(),
+                                                              'Plugins': create_plugin_dictionary()})
 
 @app.route('/home')
 def home():
@@ -38,7 +38,7 @@ def add_app_status(status):
 
 @app.route('/editapps')
 def edit_apps_get():
-    apps = {**create_container_dictionary(), **create_plugin_dictionary()}
+    apps = {'Docker': create_container_dictionary(), 'Plugins': create_plugin_dictionary()}
     return render_template('edit_apps.html', port = PORT, apps = apps)
 
 
