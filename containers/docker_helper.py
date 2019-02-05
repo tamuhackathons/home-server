@@ -3,16 +3,16 @@ sys.path.append('.')
 from plugins.plugin_parser import remove_plugin, edit_plugin
 
 client = docker.from_env()
+config = configparser.ConfigParser()
 
-def write_config(config):
+def write_config():
     with open('containers/docker_config.ini', 'w') as config_file:
         config.write(config_file)
 
 
 def add_container(image, plugin_name, url, ports = {}, volumes = []):
-    config = configparser.ConfigParser()
     config.read('containers/docker_config.ini')
-    section_name = f'Docker-{image}-{plugin_name}'
+    section_name = f'Docker-{plugin_name}'
     config.add_section(section_name)
     
     config.set(section_name, "name", plugin_name)
@@ -20,17 +20,16 @@ def add_container(image, plugin_name, url, ports = {}, volumes = []):
     config.set(section_name, "volumes", str(volumes))
     config.set(section_name, "url", url)
     
-    write_config(config)
+    write_config()
     
 def remove_container(image):
     config = configparser.ConfigParser()
     config.read('containers/docker_config.ini')
     config.remove_section(image)
     
-    write_config(config)
+    write_config()
     
 def create_container_dictionary():
-    config = configparser.ConfigParser()
     config.read('containers/docker_config.ini')
     containers = {}
     
@@ -110,13 +109,22 @@ def delete_container(name):
     container = get_container_by_name(name)
     container.stop()
     container.remove()
-    remove_plugin(name)
+    remove_container(f'Docker-{name}')
             
 def rename_container(old_name, new_name):
     image = get_container_image(old_name)
     container = get_container_by_name(old_name)
+    
+    config.read('containers/docker_config.ini')
+    
+    name = f'Docker-{old_name}'
+    port = config[name]['port']
+    ports = config[name]['ports']
+    vol = config[name]['volumes']
+    
     delete_container(old_name)
-    create_new_plugin(image, new_name)
+    
+    create_new_plugin(image, new_name, port=port, ports=ports, volumes=vol)
 
     
 if __name__ == '__main__':
