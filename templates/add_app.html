@@ -23,6 +23,18 @@
                             <td><input name="url" type="text" required class="mdl-textfield__input" placeholder="user/repo"></td>
                         </tr>
                         <tr>
+                            <td><label for-"urlPort">Port:</label></td>
+                            <td><input name="urlPort" type="text" class="mdl-textfield__input" placeholder="80/tcp"></td>
+                        </tr>
+                        <tr>
+                            <td><label for-"ports"">Ports:</label></td>
+                            <td><input name="ports" type="text" class="mdl-textfield__input" placeholder="['80/tcp', '90/tcp']"></td>
+                        </tr>
+                        <tr>
+                            <td><label for-"volumes">Volumes:</label></td>
+                            <td><input name="volumes" type="text" class="mdl-textfield__input" placeholder="{'/home/user1/': {'bind': '/mnt/vol2', 'mode': 'rw'}}"></td>
+                        </tr>
+                        <tr>
                             <td><label>Docker Repository Path / Plain URL (unchecked):</label></td>
                             <td><input name="url_option" type="checkbox" checked onclick="changeUrlType(this)"></td>
                         </tr>

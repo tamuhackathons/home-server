@@ -6,8 +6,12 @@ docker_api = Blueprint('docker_api', __name__)
 @docker_api.route('/add', methods=['POST'])
 def add_app():
     app_name = request.form.get('name')
-    url = request.form.get('url')
-    status = 'SUCCESS' if create_new_plugin(url, app_name) == 200 else 'FAILED'
+    image = request.form.get('url')
+    port = request.form.get('urlPort')
+    ports = request.form.get('ports')
+    vol = request.form.get('volumes')
+    
+    status = 'SUCCESS' if create_new_plugin(image, app_name, port=port, ports=ports, volumes=vol) == 200 else 'FAILED'
     
     return redirect('/')
     
