@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from sysinfo.sys_info import *
 
 system_api = Blueprint('system_api', __name__)

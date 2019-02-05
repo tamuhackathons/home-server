@@ -4,6 +4,8 @@ from plugins.plugin_parser import remove_plugin, edit_plugin
 
 client = docker.from_env()
 
+config = configparser.ConfigParser()
+
 def write_config():
     with open('containers/docker_config.ini', 'w') as config_file:
         config.write(config_file)

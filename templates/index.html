@@ -17,8 +17,11 @@
 				</div>
 				<hr>
 				<li class="mdl-navigation__link" onclick="onAppClick('/home')">Home</li>
-				{% for item in apps %}
-					<li onclick="onAppClick('{{ apps[item].url }}')" class="mdl-navigation__link">{{ apps[item].name }}</li>
+				{% for item in apps['Docker'] %}
+					<li onclick="onAppClick('{{ apps['Docker'][item].url }}')" class="mdl-navigation__link">{{ apps['Docker'][item].name }}</li>
+				{% endfor %}
+				{% for item in apps['Plugins'] %}
+					<li onclick="onAppClick('{{ apps['Plugins'][item].url }}')" class="mdl-navigation__link">{{ apps['Plugins'][item].name }}</li>
 				{% endfor %}
 			</nav>
 		</div>
