@@ -34,11 +34,8 @@ def add_plugin(plugin_name, url):
     write_config()
         
 def remove_plugin(plugin_name):
-    print(config.sections())
     config.read('plugins/plugins_config.ini')
-    print(config.sections())
     config.remove_section(plugin_name)
-    print(config.sections())
     
     write_config()
 

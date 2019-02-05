@@ -1,9 +1,21 @@
 import docker, configparser, socket, sys
 sys.path.append('.')
-from plugins.plugin_parser import add_plugin, remove_plugin, edit_plugin
+from plugins.plugin_parser import remove_plugin, edit_plugin
 
 client = docker.from_env()
 
+
+def add_container(dockerfile, plugin_name, ports = [""], volumes = [""]):
+    config.read('containers/docker_config.ini')
+    
+    config.add_section(f'Docker-{dockerfile}')
+    
+    config.set(f'Docker-{dockerfile}', "name", plugin_name)
+    config.set(f'Docker-{dockerfile}', "ports", ports)
+    config.set(f'Docker-{dockerfile}', "volumes", volumes)
+    config.set(f'Docker-{dockerfile}', "url", dockerfile)
+    
+    write_config()
 
 def get_free_tcp_port():
     tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
